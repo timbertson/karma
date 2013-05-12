@@ -48,7 +48,9 @@ module.exports = function(grunt) {
         'start', null, '--single-run', '--no-auto-watch', '--browsers=' + BROWSERS
       ];
 
+
       var next = function(err, result, code) {
+        var testArgs = [];
         if (processToKill) {
           processToKill.kill();
         }
@@ -66,7 +68,11 @@ module.exports = function(grunt) {
               }, function() {});
             }
 
-            spawnKarma(args, next);
+            if (args[1] === 'test/e2e/pass-opts/karma.conf.js') {
+              testArgs = ['--','arg1','arg2','arg3'];
+            }
+
+            spawnKarma(args.concat(testArgs), next);
           } else {
             specDone();
           }
